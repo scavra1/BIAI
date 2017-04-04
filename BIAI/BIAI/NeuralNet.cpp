@@ -17,7 +17,7 @@ void presentResults(NeuralNetwork neuralNet, vector<vector<double>> trainingInpu
 		cout << "f(" << trainingInputValues[i][0] << ", " << trainingInputValues[i][1] << ") = " << output << " | E = " << E << endl;
 	}
 }
-void trainNetwork(string outputFile, NeuralNetwork neuralNet, vector<vector<double>> trainingInputValues, vector<vector<double>> trainingOutputValues, double trainingCoeff) {
+void trainNetwork(string outputFile, NeuralNetwork neuralNet, vector<vector<double>> trainingInputValues, vector<vector<double>> trainingOutputValues, double trainingCoeff, double momentumCoeff) {
 	ofstream file;
 	file.open(outputFile);
 	file << "var networkErrors = [\n";
@@ -38,12 +38,13 @@ void trainNetwork(string outputFile, NeuralNetwork neuralNet, vector<vector<doub
 			double output = neuralNet.getOutputValues()[1];
 			double E = trainingOutputValues[i][0] - output;
 			error += E*E;
-			neuralNet.train(trainingCoeff);
+			neuralNet.train(trainingCoeff, momentumCoeff);
 		}
 		error /= 2;
 		file << error << ((error > targetError && iteration < maxIterations) ? "," : "];") << "\n";
 	}
-	cout << endl << "Learning coefficien: " << trainingCoeff << endl;
+	cout << endl << "Learning coefficient: " << trainingCoeff << endl;
+	cout << "Momentum coefficient: " << momentumCoeff << endl;
 	cout << "Error: " << error << endl;
 	cout << "Iterations: " << iteration << endl;
 	file.close();
@@ -71,8 +72,9 @@ int main(int argc, char* argv[]) {
 	{ 0.0 }
 	};
 	double trainingCoeff = 0.1;
+	double momentumCoeff = 0.3;
 	NeuralNetwork neuralNet({ 2, 2, 1 });
-	trainNetwork(filePath, neuralNet, trainingInputValues, trainingOutputValues, trainingCoeff);
+	trainNetwork(filePath, neuralNet, trainingInputValues, trainingOutputValues, trainingCoeff, momentumCoeff);
 	//*/
 
 	/*
@@ -91,8 +93,9 @@ int main(int argc, char* argv[]) {
 		{ 1.0 }
 	};
 	double trainingCoeff = 0.1;
+	double momentumCoeff = 0.3;
 	NeuralNetwork neuralNet({ 2, 1 });
-	trainNetwork(filePath, neuralNet, trainingInputValues, trainingOutputValues, trainingCoeff);
+	trainNetwork(filePath, neuralNet, trainingInputValues, trainingOutputValues, trainingCoeff, momentumCoeff);
 	
 	//*/
 	system("PAUSE");

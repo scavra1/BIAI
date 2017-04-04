@@ -9,7 +9,7 @@ public:
 	void setInputValues(std::vector<double> values);
 	std::vector<double> getOutputValues();
 	void setExpectedOutputValues(std::vector<double> values);
-	void train(double learningCoeff);
+	void train(double learningCoeff, double momentumCoeff);
 	//std::vector<double> getErrors();
 	//double getError();
 private:

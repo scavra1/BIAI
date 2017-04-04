@@ -30,7 +30,7 @@ void NeuralNetwork::setExpectedOutputValues(std::vector<double> values) {
 	this->expectedOutputValues = values;
 }
 
-void NeuralNetwork::train(double learningCoeff) {
+void NeuralNetwork::train(double learningCoeff, double momentumCoeff) {
 	this->outputLayer->calculateDeltasBasedOnExpectedValues(this->expectedOutputValues);
-	this->inputLayer->adjustWeights(learningCoeff);
+	this->inputLayer->adjustWeights(learningCoeff, momentumCoeff);
 }

@@ -11,11 +11,12 @@ public:
 	double getDelta() { return this->delta; };
 	std::vector<double> getWeights() { return this->weights; };
 	void calculateDelta(double lastOutput, double variableTerm);
-	void adjustWeights(double learningCoeff, std::vector<double> inputValues);
+	void adjustWeights(double learningCoeff, double momentumCoeff, std::vector<double> inputValues);
 	static double beta;
 private:
 	double activationFunction(double x);
 	std::vector<double> weights;
+	std::vector<double> lastWeightChanges;
 	double delta;
 };
 

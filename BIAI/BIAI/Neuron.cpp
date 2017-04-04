@@ -18,11 +18,12 @@ double Neuron::activationFunction(double x) {
 
 void Neuron::addWeight(double weight) {
 	this->weights.push_back(weight);
+	this->lastWeightChanges.push_back(0.0);
 }
 
 void Neuron::addWeight(double min, double max) {
 	double weight = min + (max - min) * ((double)rand() / RAND_MAX);
-	this->weights.push_back(weight);
+	this->addWeight(weight);
 }
 
 double Neuron::getOutputValue(std::vector<double> inputValues) {
@@ -37,8 +38,10 @@ void Neuron::calculateDelta(double lastOutput, double variableTerm) {
 	this->delta = Neuron::beta * lastOutput * (1 - lastOutput) * variableTerm;
 }
 
-void Neuron::adjustWeights(double learningCoeff, std::vector<double> inputValues) {
+void Neuron::adjustWeights(double learningCoeff, double momentumCoeff, std::vector<double> inputValues) {
 	for (int i = 0; i < this->weights.size(); i++) {
-		this->weights[i] += learningCoeff * this->delta * inputValues[i];
+		double weightChange = learningCoeff * this->delta * inputValues[i] + momentumCoeff * this->lastWeightChanges[i];
+		this->weights[i] += weightChange;
+		this->lastWeightChanges[i] = weightChange;
 	}
 }

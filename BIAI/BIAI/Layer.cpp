@@ -54,13 +54,13 @@ void Layer::calculateDeltas(std::vector<double> nextLayerDeltasWeightedSums) {
 	}
 }
 
-void Layer::adjustWeights(double learningCoeff, std::vector<double> previousLayerOutputValues) {
+void Layer::adjustWeights(double learningCoeff, double momentumCoeff, std::vector<double> previousLayerOutputValues) {
 	int size = this->neurons.size();
 	for (int i = 1; i < size; i++) {
-		this->neurons[i]->adjustWeights(learningCoeff, previousLayerOutputValues);
+		this->neurons[i]->adjustWeights(learningCoeff, momentumCoeff, previousLayerOutputValues);
 	}
 	if (this->nextLayer != NULL) {
-		this->nextLayer->adjustWeights(learningCoeff, this->lastOutputValues);
+		this->nextLayer->adjustWeights(learningCoeff, momentumCoeff, this->lastOutputValues);
 	}
 }
 

@@ -11,7 +11,7 @@ public:
 	virtual std::vector<double> getOutputValues();
 	void calculateDeltasBasedOnExpectedValues(std::vector<double> expectedOutputs);
 	virtual void calculateDeltas(std::vector<double> nextLayerDeltas);
-	void adjustWeights(double learningCoeff, std::vector<double> previousLayerOutputValues);
+	void adjustWeights(double learningCoeff, double momentumCoeff, std::vector<double> previousLayerOutputValues);
 protected:
 	Layer* previousLayer = NULL;
 	Layer* nextLayer = NULL;

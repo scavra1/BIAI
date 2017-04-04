@@ -17,6 +17,6 @@ void InputLayer::calculateDeltas(std::vector<double> nextLayerDeltas) {
 	//Do nothing
 }
 
-void InputLayer::adjustWeights(double learningCoeff) {
-	this->nextLayer->adjustWeights(learningCoeff, this->inputValues);
+void InputLayer::adjustWeights(double learningCoeff, double momentumCoeff) {
+	this->nextLayer->adjustWeights(learningCoeff, momentumCoeff, this->inputValues);
 }
