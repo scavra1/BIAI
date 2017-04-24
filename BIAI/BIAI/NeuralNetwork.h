@@ -10,11 +10,11 @@ public:
 	std::vector<double> getOutputValues();
 	void setExpectedOutputValues(std::vector<double> values);
 	void train(double learningCoeff, double momentumCoeff);
-	//std::vector<double> getErrors();
-	//double getError();
+	double getError();
 private:
 	InputLayer* inputLayer;
 	Layer* outputLayer;
 	std::vector<double> expectedOutputValues;
+	std::vector<double> lastOutputValues;
 };
 

@@ -2,7 +2,7 @@
 #include "Neuron.h"
 #include <math.h>
 
-double Neuron::beta = 4.0;
+double Neuron::beta = 1.0;
 Neuron::Neuron() {
 
 }

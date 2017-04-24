@@ -23,7 +23,8 @@ void NeuralNetwork::setInputValues(std::vector<double> values) {
 }
 
 std::vector<double> NeuralNetwork::getOutputValues() {
-	return this->outputLayer->getOutputValues();
+	this->lastOutputValues = this->outputLayer->getOutputValues();
+	return this->lastOutputValues;
 }
 
 void NeuralNetwork::setExpectedOutputValues(std::vector<double> values) {
@@ -33,4 +34,12 @@ void NeuralNetwork::setExpectedOutputValues(std::vector<double> values) {
 void NeuralNetwork::train(double learningCoeff, double momentumCoeff) {
 	this->outputLayer->calculateDeltasBasedOnExpectedValues(this->expectedOutputValues);
 	this->inputLayer->adjustWeights(learningCoeff, momentumCoeff);
+}
+
+double NeuralNetwork::getError() {
+	double error = 0.0;
+	for (int i = 0; i < this->expectedOutputValues.size(); i++) {
+		error += this->lastOutputValues[i+1] - this->expectedOutputValues[i];
+	}
+	return error;
 }
