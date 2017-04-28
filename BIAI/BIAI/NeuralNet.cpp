@@ -40,7 +40,7 @@ int main(int argc, char* argv[]) {
 	NeuralNetwork neuralNet({ 2, 2, 1 });
 	Trainer trainer(&neuralNet);
 	trainer.setTrainingDataSet(trainingInputValues, trainingOutputValues);
-	TrainingResult result = trainer.train(0.01, 10000);
+	TrainingResult result = trainer.train(0.4, 0.0, 0.01, 10000);
 
 	for (int j = 0; j < trainingInputValues.size(); j++) {
 		cout << neuralNet.getOutputValues(trainingInputValues[j])[0] << endl;

@@ -14,7 +14,7 @@ public:
 	~Trainer();
 	void setTrainingDataSet(std::vector<std::vector<double>> trainingInputValues, std::vector<std::vector<double>> trainingOutputValues);
 	void setTestDataSet(std::vector<std::vector<double>> testInputValues, std::vector<std::vector<double>> testOutputValues);
-	TrainingResult train(double targetError, int maxIterations);
+	TrainingResult train(double trainingCoeff, double momentumCoeff, double targetError, int maxIterations);
 protected:
 	NeuralNetwork* neuralNetwork;
 	std::vector<std::vector<double>> trainingInputValues;

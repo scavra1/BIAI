@@ -15,6 +15,7 @@ public:
 	std::vector<double> getLastOutputValues() { return this->lastOutputValues; };
 protected:
 	std::vector<std::vector<double>> weights;
+	std::vector<std::vector<double>> lastWeightsChanges;
 	std::vector<double> deltas;
 	std::vector<double> lastOutputValues;
 };

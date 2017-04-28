@@ -17,8 +17,10 @@ Layer::Layer(int prevLayerNeuronsNumber, int neuronsNumber) {
 	this->lastOutputValues.resize(neuronsNumber);
 	this->deltas.resize(neuronsNumber);
 	this->weights.resize(neuronsNumber);
+	this->lastWeightsChanges.resize(neuronsNumber);
 	for (int i = 0; i < neuronsNumber; i++) {
 		this->weights[i].resize(prevLayerNeuronsNumber + 1);	//+1 because of bias neuron
+		this->lastWeightsChanges[i].resize(prevLayerNeuronsNumber + 1);
 		for (int j = 0; j < prevLayerNeuronsNumber + 1; j++) {
 			double weight = minW + (maxW - minW) * ((double)rand() / RAND_MAX);
 			this->weights[i][j] = weight;
@@ -57,7 +59,9 @@ void Layer::adjustWeights(double learningCoeff, double momentumCoeff, std::vecto
 	for (int i = 0; i < this->weights.size(); i++) {
 		this->weights[i][0] += learningCoeff * this->deltas[i] * 1.0;
 		for (int j = 1; j < this->weights[i].size(); j++) {
-			this->weights[i][j] += learningCoeff * this->deltas[i] * previousLayerOutputValues[j - 1];
+			double dw = learningCoeff * this->deltas[i] * previousLayerOutputValues[j - 1] + momentumCoeff * this->lastWeightsChanges[i][j];
+			this->lastWeightsChanges[i][j] = dw;
+			this->weights[i][j] += dw;
 		}
 	}
 }

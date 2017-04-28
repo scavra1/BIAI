@@ -10,8 +10,12 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Layer.cpp" />
-    <ClCompile Include="Trainer.cpp" />
+    <ClCompile Include="Layer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Trainer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NeuralNetwork.h">
@@ -23,8 +27,12 @@
     <ClInclude Include="targetver.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Layer.h" />
-    <ClInclude Include="Trainer.h" />
+    <ClInclude Include="Layer.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Trainer.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
