@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Trainer.h"
+#include <fstream>
 
 Trainer::~Trainer() {}
 
@@ -32,4 +33,38 @@ TrainingResult Trainer::train(double trainingCoeff, double momentumCoeff, double
 		}
 	}
 	return { iterations, error, errorsList };
+}
+
+void Trainer::loadDataSetFromFile(std::string fileName, std::vector<std::vector<double>> &inputValues, std::vector<std::vector<double>> &outputValues) {
+	std::fstream file(fileName, std::ios_base::in);
+	int examplesNumber, inputsNumber, outputsNumber;
+	file >> examplesNumber;
+	file >> inputsNumber;
+	file >> outputsNumber;
+
+	inputValues.resize(examplesNumber);
+	outputValues.resize(examplesNumber);
+	for (int i = 0; i < examplesNumber; i++) {
+		inputValues[i].resize(inputsNumber);
+		outputValues[i].resize(outputsNumber);
+
+		//Read inputs
+		for (int j = 0; j < inputsNumber; j++) {
+			file >> inputValues[i][j];
+		}
+
+		//Read outputs
+		for (int j = 0; j < outputsNumber; j++) {
+			file >> outputValues[i][j];
+		}
+	}
+	file.close();
+}
+
+void Trainer::loadTrainingSetFromFile(std::string fileName) {
+	this->loadDataSetFromFile(fileName, this->trainingInputValues, this->trainingOutputValues);
+}
+
+void Trainer::loadTestSetFromFile(std::string fileName) {
+	this->loadDataSetFromFile(fileName, this->testInputValues, this->testOutputValues);
 }
