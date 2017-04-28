@@ -4,6 +4,7 @@
 struct TrainingResult {
 	int iterations;
 	double error;
+	std::vector<double> errorsList;
 };
 
 class Trainer

@@ -14,7 +14,7 @@ void Trainer::setTestDataSet(std::vector<std::vector<double>> testInputValues, s
 }
 
 TrainingResult Trainer::train(double targetError, int maxIterations) {		//Returns number of iterations
-	TrainingResult result;
+	std::vector<double> errorsList;
 	double error;
 	int iterations = maxIterations;
 	for (int i = 0; i < maxIterations; i++) {
@@ -24,12 +24,11 @@ TrainingResult Trainer::train(double targetError, int maxIterations) {		//Return
 			neuralNetwork->train(trainingOutputValues[j], 0.4, 0.0);
 			error += neuralNetwork->getError(trainingOutputValues[j]);
 		}
+		errorsList.push_back(error);
 		if (error < targetError) {
 			iterations = i;
 			break;
 		}
 	}
-	result.error = error;
-	result.iterations = iterations;
-	return result;
+	return { iterations, error, errorsList };
 }
