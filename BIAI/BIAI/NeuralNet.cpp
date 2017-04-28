@@ -6,6 +6,7 @@
 #include <fstream>
 
 #include "NeuralNetwork.h"
+#include "Trainer.h"
 
 using namespace std;
 
@@ -37,26 +38,16 @@ int main(int argc, char* argv[]) {
 	};
 
 	NeuralNetwork neuralNet({ 2, 2, 1 });
-	double error;
-	int iterations = 10000;
-	for (int i = 0; i < iterations; i++) {
-		error = 0;
-		for (int j = 0; j < trainingInputValues.size(); j++) {
-			neuralNet.getOutputValues(trainingInputValues[j]);
-			neuralNet.train(trainingOutputValues[j], 0.4, 0.0);
-			error += neuralNet.getError(trainingOutputValues[j]);
-		}
-		if (error < 0.01) {
-			iterations = i;
-			break;
-		}
-	}
+	Trainer trainer(&neuralNet);
+	trainer.setTrainingDataSet(trainingInputValues, trainingOutputValues);
+	TrainingResult result = trainer.train(0.01, 10000);
 
 	for (int j = 0; j < trainingInputValues.size(); j++) {
 		cout << neuralNet.getOutputValues(trainingInputValues[j])[0] << endl;
 	}
-	cout << "Iterations = " << iterations << endl;
-	cout << "Error = " << error << endl;
+
+	cout << "Iterations = " << result.iterations << endl;
+	cout << "Error = " << result.error << endl;
 
 	system("PAUSE");
     return 0;

@@ -11,6 +11,7 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Layer.cpp" />
+    <ClCompile Include="Trainer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NeuralNetwork.h">
@@ -23,6 +24,7 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Layer.h" />
+    <ClInclude Include="Trainer.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
