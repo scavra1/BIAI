@@ -18,6 +18,7 @@ public:
 	void loadDataSetFromFile(std::string fileName, std::vector<std::vector<double>> &inputValues, std::vector<std::vector<double>> &outputValues);
 	void loadTrainingSetFromFile(std::string fileName);
 	void loadTestSetFromFile(std::string fileName);
+	static void saveErrorsAsJSArray(std::string fileName, std::vector<double> errorsList);
 protected:
 	NeuralNetwork* neuralNetwork;
 	std::vector<std::vector<double>> trainingInputValues;

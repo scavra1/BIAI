@@ -22,11 +22,11 @@ int main(int argc, char* argv[]) {
 	}
 	srand((unsigned)time(NULL));
 
-	//-----------------------------------------------XOR--------------------------------------------------
 	NeuralNetwork neuralNet({ 2, 2, 1 });
 	Trainer trainer(&neuralNet);
 	trainer.loadTrainingSetFromFile(trainingDataFilePath);
 	TrainingResult result = trainer.train(0.4, 0.0, 0.01, 10000);
+	Trainer::saveErrorsAsJSArray(chartDataFilePath, result.errorsList);
 
 	cout << "Iterations = " << result.iterations << endl;
 	cout << "Error = " << result.error << endl;

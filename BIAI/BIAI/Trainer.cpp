@@ -68,3 +68,16 @@ void Trainer::loadTrainingSetFromFile(std::string fileName) {
 void Trainer::loadTestSetFromFile(std::string fileName) {
 	this->loadDataSetFromFile(fileName, this->testInputValues, this->testOutputValues);
 }
+
+void Trainer::saveErrorsAsJSArray(std::string fileName, std::vector<double> errorsList) {
+	std::ofstream file(fileName);
+	file << "var networkErrors = [";
+	for (int i = 0; i < errorsList.size(); i++) {
+		file << errorsList[i];
+		if (i != (errorsList.size() - 1)) {
+			file << ",";
+		}
+	}
+	file << "];";
+	file.close();
+}
