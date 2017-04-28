@@ -1,18 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="BiasNeuron.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Neuron.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="InputLayer.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Layer.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="NeuralNet.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -22,21 +10,10 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Layer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BiasNeuron.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="InputLayer.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Layer.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="NeuralNetwork.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Neuron.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
@@ -45,6 +22,7 @@
     <ClInclude Include="targetver.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Layer.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />

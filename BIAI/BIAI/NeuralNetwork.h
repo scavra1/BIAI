@@ -1,20 +1,17 @@
 #pragma once
+#include "Layer.h"
 #include <vector>
-#include "InputLayer.h"
 
 class NeuralNetwork {
 public:
 	NeuralNetwork(std::vector<unsigned int> neuronNumbers);
 	~NeuralNetwork();
-	void setInputValues(std::vector<double> values);
-	std::vector<double> getOutputValues();
-	void setExpectedOutputValues(std::vector<double> values);
-	void train(double learningCoeff, double momentumCoeff);
-	double getError();
-private:
-	InputLayer* inputLayer;
-	Layer* outputLayer;
-	std::vector<double> expectedOutputValues;
-	std::vector<double> lastOutputValues;
+	std::vector<double> getOutputValues(std::vector<double> inputValues);
+	void train(std::vector<double> expectedOutputs, double learningCoeff, double momentumCoeff);
+	double getError(std::vector<double> expectedOutputs);
+	static double activationFunction(double x);
+	static double beta;
+protected:
+	std::vector<Layer> layers;
+	std::vector<double> lastInputValues;
 };
-
