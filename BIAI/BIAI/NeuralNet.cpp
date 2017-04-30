@@ -10,19 +10,29 @@
 
 using namespace std;
 
+void readLearningParamsFromFile(string fileName, double &learningCoeff, double &momentumCoeff, double &targetError, int &maxIterations) {
+	std::ifstream file(fileName);
+	file >> learningCoeff;
+	file >> momentumCoeff;
+	file >> targetError;
+	file >> maxIterations;
+	file.close();
+}
+
 int main(int argc, char* argv[]) {
 	string chartDataFilePath = "../../charts/learningData.js";
-	string trainingDataFilePath, neuralNetworkFilePath, saveTrainedNetwork, saveNetworkFilePath;
-	if (argc < 3) {
+	string trainingDataFilePath, neuralNetworkFilePath, learningParamsFilePath, saveTrainedNetwork, saveNetworkFilePath;
+	if (argc < 4) {
 		cout << "Argument is missing!" << endl;
 		return 0;
 	}
 	else {
 		neuralNetworkFilePath = argv[1];
 		trainingDataFilePath = argv[2];
-		if (argc >= 5) {
-			saveTrainedNetwork = argv[3];
-			saveNetworkFilePath = argv[4];
+		learningParamsFilePath = argv[3];
+		if (argc >= 6) {
+			saveTrainedNetwork = argv[4];
+			saveNetworkFilePath = argv[5];
 		}
 		else {
 			saveTrainedNetwork = "n";
@@ -30,10 +40,15 @@ int main(int argc, char* argv[]) {
 	}
 	srand((unsigned)time(NULL));
 
+	double learningCoeff, momentumCoeff, targetError;
+	int maxIterations;
+	readLearningParamsFromFile(learningParamsFilePath, learningCoeff, momentumCoeff, targetError, maxIterations);
+
 	NeuralNetwork neuralNet(neuralNetworkFilePath);
 	Trainer trainer(&neuralNet);
 	trainer.loadTrainingSetFromFile(trainingDataFilePath);
-	TrainingResult result = trainer.train(0.4, 0.0, 0.01, 10000);
+
+	TrainingResult result = trainer.train(learningCoeff, momentumCoeff, targetError, maxIterations);
 	Trainer::saveErrorsAsJSArray(chartDataFilePath, result.errorsList);
 
 	cout << "Iterations = " << result.iterations << endl;
