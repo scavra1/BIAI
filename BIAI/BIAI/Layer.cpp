@@ -28,6 +28,19 @@ Layer::Layer(int prevLayerNeuronsNumber, int neuronsNumber) {
 	}
 }
 
+Layer::Layer(std::vector<std::vector<double>> weights) {
+	this->weights = weights;
+	int neuronsNumber = this->getNeuronsNumber();
+	
+	this->lastOutputValues.resize(neuronsNumber);
+	this->deltas.resize(neuronsNumber);
+	this->lastWeightsChanges.resize(neuronsNumber);
+
+	int prevLayerNeuronsNumber = this->getPrevLayerNeuronsNumber();
+	for (int i = 0; i < neuronsNumber; i++) {
+		this->lastWeightsChanges[i].resize(prevLayerNeuronsNumber + 1);
+	}
+}
 
 Layer::~Layer() {}
 

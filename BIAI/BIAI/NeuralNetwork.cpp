@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "NeuralNetwork.h"
+#include <fstream>
 
 double NeuralNetwork::beta = 1.0;
 double NeuralNetwork::activationFunction(double x) {
@@ -55,4 +56,72 @@ double NeuralNetwork::getError(std::vector<double> expectedOutputs) {
 	}
 	error /= 2;
 	return error;
+}
+
+void NeuralNetwork::saveToFile(std::string fileName) {
+	/*
+	Format:
+	char readWeights //'y' or 'n'
+	int Number_of_layers
+	int Number_of_neurons_0
+	int Number_of_neurons_1
+		double w00 double w01 double w02 ...
+		double w10 double w11 double w12 ...
+		double w20 double w21 double w22 ...
+		...
+	...
+	int Number_of_neurons_n
+		double w00 double w01 double w02 ...
+		double w10 double w11 double w12 ...
+		double w20 double w21 double w22 ...
+		...
+	*/
+	std::ofstream file(fileName);
+	file << 'y' << std::endl;
+	file << (this->layers.size() + 1) << std::endl;	//Number of layers. WITH input layer.
+	file << this->layers[0].getPrevLayerNeuronsNumber() << std::endl;
+
+	for (int i = 0; i < this->layers.size(); i++) {
+		file << this->layers[i].getNeuronsNumber() << std::endl;
+		std::vector<std::vector<double>> weights = this->layers[i].getWeights();
+		for (int j = 0; j < weights.size(); j++) {
+			for (int k = 0; k < weights[j].size(); k++) {
+				file << weights[j][k] << " ";
+			}
+			file << std::endl;
+		}
+	}
+	file.close();
+}
+
+void NeuralNetwork::loadFromFile(std::string fileName) {
+	std::ifstream file(fileName);
+	
+	char readWeights;
+	int layersNumber, prevLayerSize, currentLayerSize;
+
+	file >> readWeights;
+	file >> layersNumber;
+	file >> currentLayerSize;
+
+	for (int i = 1; i < layersNumber; i++) {
+		prevLayerSize = currentLayerSize;
+		file >> currentLayerSize;
+		if (readWeights == 'y') {
+			std::vector<std::vector<double>> weights;
+			weights.resize(currentLayerSize);
+			for (int j = 0; j < currentLayerSize; j++) {
+				weights[j].resize(prevLayerSize + 1);
+				for (int k = 0; k < prevLayerSize + 1; k++) {
+					file >> weights[j][k];
+				}
+			}
+			this->layers.push_back(Layer(weights));
+		}
+		else {
+			this->layers.push_back(Layer(prevLayerSize, currentLayerSize));
+		}
+		
+	}
+	file.close();
 }

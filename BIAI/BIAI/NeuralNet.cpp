@@ -12,17 +12,25 @@ using namespace std;
 
 int main(int argc, char* argv[]) {
 	string chartDataFilePath = "../../charts/learningData.js";
-	string trainingDataFilePath;
-	if (argc < 2) {
+	string trainingDataFilePath, neuralNetworkFilePath, saveTrainedNetwork, saveNetworkFilePath;
+	if (argc < 3) {
 		cout << "Argument is missing!" << endl;
 		return 0;
 	}
 	else {
-		trainingDataFilePath = argv[1];
+		neuralNetworkFilePath = argv[1];
+		trainingDataFilePath = argv[2];
+		if (argc >= 5) {
+			saveTrainedNetwork = argv[3];
+			saveNetworkFilePath = argv[4];
+		}
+		else {
+			saveTrainedNetwork = "n";
+		}
 	}
 	srand((unsigned)time(NULL));
 
-	NeuralNetwork neuralNet({ 2, 2, 1 });
+	NeuralNetwork neuralNet(neuralNetworkFilePath);
 	Trainer trainer(&neuralNet);
 	trainer.loadTrainingSetFromFile(trainingDataFilePath);
 	TrainingResult result = trainer.train(0.4, 0.0, 0.01, 10000);
@@ -30,6 +38,10 @@ int main(int argc, char* argv[]) {
 
 	cout << "Iterations = " << result.iterations << endl;
 	cout << "Error = " << result.error << endl;
+
+	if (saveTrainedNetwork == "y") {
+		neuralNet.saveToFile(saveNetworkFilePath);
+	}
 
 	system("PAUSE");
     return 0;
