@@ -58,6 +58,19 @@ double NeuralNetwork::getError(std::vector<double> expectedOutputs) {
 	return error;
 }
 
+int NeuralNetwork::getOutputIndexWithHighestValue() {
+	int index = 0;
+	double maxValue = 0;
+	std::vector<double> lastOutputs = this->layers[this->layers.size() - 1].getLastOutputValues();
+	for (int i = 1; i < lastOutputs.size(); i++) {
+		if (lastOutputs[i] > maxValue) {
+			maxValue = lastOutputs[i];
+			index = i;
+		}
+	}
+	return index;
+}
+
 void NeuralNetwork::saveToFile(std::string fileName) {
 	/*
 	Format:

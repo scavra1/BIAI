@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Trainer.h"
 #include <fstream>
+#include <iostream>
+#include <iomanip>
 
 Trainer::~Trainer() {}
 
@@ -14,25 +16,43 @@ void Trainer::setTestDataSet(std::vector<std::vector<double>> testInputValues, s
 	this->testOutputValues = testOutputValues;
 }
 
-//Returns number of iterations
-TrainingResult Trainer::train(double trainingCoeff, double momentumCoeff, double targetError, int maxIterations) {
+TrainingResult Trainer::train(double trainingCoeff, double momentumCoeff, double targetError, int maxIterations, bool log) {
 	std::vector<double> errorsList;
+	std::vector<double> correctnessList;
 	double error;
+	double correctness;
 	int iterations = maxIterations;
 	for (int i = 0; i < maxIterations; i++) {
-		error = 0;
-		for (int j = 0; j < trainingInputValues.size(); j++) {
-			neuralNetwork->getOutputValues(trainingInputValues[j]);
-			neuralNetwork->train(trainingOutputValues[j], trainingCoeff, momentumCoeff);
-			error += neuralNetwork->getError(trainingOutputValues[j]);
+		error = 0.0;
+		correctness = 0.0;
+		for (int j = 0; j < this->trainingInputValues.size(); j++) {
+			neuralNetwork->getOutputValues(this->trainingInputValues[j]);
+			if (i != 0) {
+				neuralNetwork->train(this->trainingOutputValues[j], trainingCoeff, momentumCoeff);
+			}
+			error += neuralNetwork->getError(this->trainingOutputValues[j]);
+
+			int index = neuralNetwork->getOutputIndexWithHighestValue();
+			if (this->trainingOutputValues[j][index] > 0.9) {
+				correctness += 1;
+			}
 		}
+		correctness /= this->trainingInputValues.size();
+		error /= this->trainingInputValues.size();
 		errorsList.push_back(error);
+		correctnessList.push_back(correctness);
 		if (error < targetError) {
 			iterations = i;
 			break;
 		}
+		if (log) {
+			std::cout << std::fixed << std::setprecision(6)
+				<< "Iteration " << i
+				<< ", Error: " << error
+				<< " Classification correctness: " << std::fixed << std::setprecision(2) << (100 * correctness) << "%" << std::endl;
+		}
 	}
-	return { iterations, error, errorsList };
+	return { iterations, error, errorsList, correctnessList };
 }
 
 void Trainer::loadDataSetFromFile(std::string fileName, std::vector<std::vector<double>> &inputValues, std::vector<std::vector<double>> &outputValues) {
@@ -69,15 +89,26 @@ void Trainer::loadTestSetFromFile(std::string fileName) {
 	this->loadDataSetFromFile(fileName, this->testInputValues, this->testOutputValues);
 }
 
-void Trainer::saveErrorsAsJSArray(std::string fileName, std::vector<double> errorsList) {
+void Trainer::saveTrainingDataAsJSArray(std::string fileName, std::vector<double> errorsList, std::vector<double> correctnessList) {
 	std::ofstream file(fileName);
+
 	file << "var networkErrors = [";
 	for (int i = 0; i < errorsList.size(); i++) {
-		file << errorsList[i];
+		file << std::fixed << std::setprecision(6) << errorsList[i];
 		if (i != (errorsList.size() - 1)) {
 			file << ",";
 		}
 	}
-	file << "];";
+	file << "];" << std::endl;
+
+	file << "var networkCorrectness = [";
+	for (int i = 0; i < correctnessList.size(); i++) {
+		file << std::fixed << std::setprecision(6) << correctnessList[i];
+		if (i != (correctnessList.size() - 1)) {
+			file << ",";
+		}
+	}
+	file << "];" << std::endl;
+
 	file.close();
 }

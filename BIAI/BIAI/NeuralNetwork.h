@@ -10,6 +10,7 @@ public:
 	std::vector<double> getOutputValues(std::vector<double> inputValues);
 	void train(std::vector<double> expectedOutputs, double learningCoeff, double momentumCoeff);
 	double getError(std::vector<double> expectedOutputs);
+	int getOutputIndexWithHighestValue();
 	void saveToFile(std::string fileName);
 	void loadFromFile(std::string fileName);
 	static double activationFunction(double x);
