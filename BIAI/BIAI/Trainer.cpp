@@ -25,20 +25,17 @@ TrainingResult Trainer::train(double trainingCoeff, double momentumCoeff, double
 	for (int i = 0; i < maxIterations; i++) {
 		error = 0.0;
 		correctness = 0.0;
-		for (int j = 0; j < this->trainingInputValues.size(); j++) {
-			neuralNetwork->getOutputValues(this->trainingInputValues[j]);
-			if (i != 0) {
-				neuralNetwork->train(this->trainingOutputValues[j], trainingCoeff, momentumCoeff);
-			}
-			error += neuralNetwork->getError(this->trainingOutputValues[j]);
+		for (int j = 0; j < this->testInputValues.size(); j++) {
+			neuralNetwork->getOutputValues(this->testInputValues[j]);
+			error += neuralNetwork->getError(this->testOutputValues[j]);
 
 			int index = neuralNetwork->getOutputIndexWithHighestValue();
-			if (this->trainingOutputValues[j][index] > 0.9) {
+			if (this->testOutputValues[j][index] > 0.9) {
 				correctness += 1;
 			}
 		}
-		correctness /= this->trainingInputValues.size();
-		error /= this->trainingInputValues.size();
+		correctness /= this->testInputValues.size();
+		error /= this->testInputValues.size();
 		errorsList.push_back(error);
 		correctnessList.push_back(correctness);
 		if (error < targetError) {
@@ -50,6 +47,12 @@ TrainingResult Trainer::train(double trainingCoeff, double momentumCoeff, double
 				<< "Iteration " << i
 				<< ", Error: " << error
 				<< " Classification correctness: " << std::fixed << std::setprecision(2) << (100 * correctness) << "%" << std::endl;
+		}
+
+		//Train
+		for (int j = 0; j < this->trainingInputValues.size(); j++) {
+			neuralNetwork->getOutputValues(this->trainingInputValues[j]);
+			neuralNetwork->train(this->trainingOutputValues[j], trainingCoeff, momentumCoeff);
 		}
 	}
 	return { iterations, error, errorsList, correctnessList };

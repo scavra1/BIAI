@@ -20,19 +20,20 @@ void readLearningParamsFromFile(string fileName, double &learningCoeff, double &
 }
 
 int main(int argc, char* argv[]) {
-	string trainingDataFilePath, neuralNetworkFilePath, learningParamsFilePath, saveTrainedNetwork, saveNetworkFilePath, chartDataFilePath;
-	if (argc < 5) {
+	string trainingDataFilePath, testDataFilePath, neuralNetworkFilePath, learningParamsFilePath, saveTrainedNetwork, saveNetworkFilePath, chartDataFilePath;
+	if (argc < 6) {
 		cout << "Argument is missing!" << endl;
 		return 0;
 	}
 	else {
 		neuralNetworkFilePath = argv[1];
 		trainingDataFilePath = argv[2];
-		learningParamsFilePath = argv[3];
-		chartDataFilePath = argv[4];
-		if (argc >= 7) {
-			saveTrainedNetwork = argv[5];
-			saveNetworkFilePath = argv[6];
+		testDataFilePath = argv[3];
+		learningParamsFilePath = argv[4];
+		chartDataFilePath = argv[5];
+		if (argc >= 8) {
+			saveTrainedNetwork = argv[6];
+			saveNetworkFilePath = argv[7];
 		}
 		else {
 			saveTrainedNetwork = "n";
@@ -47,6 +48,7 @@ int main(int argc, char* argv[]) {
 	NeuralNetwork neuralNet(neuralNetworkFilePath);
 	Trainer trainer(&neuralNet);
 	trainer.loadTrainingSetFromFile(trainingDataFilePath);
+	trainer.loadTestSetFromFile(testDataFilePath);
 
 	TrainingResult result = trainer.train(learningCoeff, momentumCoeff, targetError, maxIterations, true);
 	Trainer::saveTrainingDataAsJSArray(chartDataFilePath, result.errorsList, result.correctnessList);
