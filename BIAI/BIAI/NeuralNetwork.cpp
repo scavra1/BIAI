@@ -59,9 +59,9 @@ double NeuralNetwork::getError(std::vector<double> expectedOutputs) {
 }
 
 int NeuralNetwork::getOutputIndexWithHighestValue() {
-	int index = 0;
-	double maxValue = 0;
 	std::vector<double> lastOutputs = this->layers[this->layers.size() - 1].getLastOutputValues();
+	int index = 0;
+	double maxValue = lastOutputs[0];
 	for (int i = 1; i < lastOutputs.size(); i++) {
 		if (lastOutputs[i] > maxValue) {
 			maxValue = lastOutputs[i];
