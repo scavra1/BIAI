@@ -50,7 +50,12 @@ TrainingResult Trainer::train(double trainingCoeff, double momentumCoeff, double
 		}
 
 		//Train
-		for (int j = 0; j < this->trainingInputValues.size(); j++) {
+		const int parts = 100;
+		int partSize = this->trainingInputValues.size() / parts;
+		int part = i % parts;
+		int startIndex = part * partSize;
+		int endIndex = startIndex + partSize;
+		for (int j = startIndex; j < endIndex; j++) {
 			neuralNetwork->getOutputValues(this->trainingInputValues[j]);
 			neuralNetwork->train(this->trainingOutputValues[j], trainingCoeff, momentumCoeff);
 		}
