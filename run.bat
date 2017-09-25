@@ -1,0 +1,1 @@
+BIAI\x64\Release\BIAI.exe ./data/networkStruct.txt ./data/trainingData.txt ./data/testData.txt ./data/learningParams.txt ./charts/learningData.js
